@@ -8,38 +8,38 @@
 class db {
 
       //DB connection Member variables
-      var $serverName;
-      var $userName;
-      var $password;
-      var $dbName;
+      public $serverName;
+      public $userName;
+      public $password;
+      public $dbName;
 
       //DB Connection
-      $conn;
-      $isConnected      = False;
-      
-      function __construct($ServerName, $UserName, $Password, $DbName) {
-               $this->serverName = $UserName;
+      public $conn;
+      public $isConnected = False;
+
+      function construct($ServerName, $UserName, $Password, $DbName) {
+               $this->serverName = $ServerName;
                $this->userName = $UserName;
                $this->password = $Password;
-               $this->dbName; = $DbName;
-      }      
-      
-      function start() {
-               $conn = new mysqli($servername, $username, $password, $dbname);
+               $this->dbName = $DbName;
+      }
 
-               if ($conn->connect_error) {
-                  die("Connection failed: " . $conn->connect_error);
-               }               
-               
-               $isConnected = True;  
+      function start() {
+               $this->conn = new mysqli($this->serverName, $this->userName, $this->password, $this->dbName);
+
+               if ($this->conn->connect_error) {
+                  die("Connection failed: " . $this->conn->connect_error);
+               }
+
+               $isConnected = True;
       }
 
       function performQuery($sqlQuery) {
-               if(!isConnected) {
+               if(!$this->isConnected) {
                         return;
                }
 
-               return $conn->query($sqlQuery);
+               return $this->conn->query($sqlQuery);
       }
 
 } // End of db class
