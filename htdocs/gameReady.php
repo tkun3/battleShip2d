@@ -16,48 +16,39 @@
 				<?php
 				$ship = array(10);
 				$shipCount = 0;
+
 				for($i=1; $i<9; $i++){
 					for($j=1; $j<9; $j++){
 						if(isset($_POST['checkBox'.$i.$j]) && $_POST['checkBox'.$i.$j] == 'Yes'){
 							$ship[$shipCount] = 'checkBox'.$i.$j;
 							echo $ship[$shipCount];
 							$shipCount++;
-
 						}
 					}
 				}
-
 				?>
-
-				<div class="leftScreen" align="center">
+					<div class='leftScreen' align='center'>
 
 						<!-- Dynamic Ship Selection Table -->	<!-- Dynamic Ship Selection Table -->	<!-- Dynamic Ship Selection Table -->
-					<form action="gameReady.php" method="POST">
-					<table id="player1Table" class="tablePosition">
+					<form action='gameReady.php' method='POST'>
+					<table id='player1Table' class='tablePosition'>
 						<tbody>
-
-						<script type="text/javascript">
-						function btnClick(i, j) {
-								var x = document.getElementById("player1Table").getElementsByTagName("td");
-								i = (i-1)*8;
-								j =
-								j+i-1;
-								// default background color onClick is blue
-								var bgColor = "#9999ff";
-								// unless background color is already blue, then set it to white
-								if (x[j].style.backgroundColor == "rgb(153, 153, 255)")
-								{
-									bgColor = "#ffffff";
-								}
-								x[j].style.backgroundColor = bgColor;
-						}
-						</script>
-
 						<?php
+						$printed = 0;
 						for($i=1; $i<9; $i++){
 							echo "<tr name='row$i'> \n";
 							for($j=1; $j<9; $j++){
-								echo "<td id='col$i$j' name='col$i$j'> <input type='checkbox' class='cell' onClick='btnClick($i,$j);' value='Yes' name='checkBox$i$j'> </td> \n";
+								$word = 'checkBox'.$i.$j;
+								for($z=0; $z <10; $z++){
+									if(isset($ship[$z]) && $ship[$z] == $word){
+										$printed = 1;
+										echo "<td id='col$i$j' name='col$i$j' class='gameReadyTd'> </td> \n";
+									}
+								}
+								if($printed == 0){
+									echo "<td id='col$i$j' name='col$i$j'> </td> \n";
+								}
+								$printed = 0;
 					 		}
 						}
 						?>
