@@ -14,22 +14,28 @@
 				</div>
 
 				<?php
-				$ship = array(10);
-				$shipCount = 0;
+				class shipParameters{
 
-				for($i=1; $i<9; $i++){
-					for($j=1; $j<9; $j++){
-						if(isset($_POST['checkBox'.$i.$j]) && $_POST['checkBox'.$i.$j] == 'Yes'){
-							$ship[$shipCount] = 'checkBox'.$i.$j;
-							echo $ship[$shipCount];
-							$shipCount++;
+					public $shipLocations = array(10);
+					public $shipCount = 0;
+					public $shipLive = 10;
+
+					function configureGrid(){
+						for($i=1; $i<9; $i++){
+							for($j=1; $j<9; $j++){
+								if(isset($_POST['checkBox'.$i.$j]) && $_POST['checkBox'.$i.$j] == 'Yes'){
+									$this->shipLocations[$this->shipCount] = 'checkBox'.$i.$j;
+									$this->shipCount++;
+								}
+							}
 						}
 					}
 				}
+
+				$player1 = new shipParameters;
+				$player1->configureGrid();
 				?>
 					<div class='leftScreen' align='center'>
-
-						<!-- Dynamic Ship Selection Table -->	<!-- Dynamic Ship Selection Table -->	<!-- Dynamic Ship Selection Table -->
 					<form action='gameReady.php' method='POST'>
 					<table id='player1Table' class='tablePosition'>
 						<tbody>
@@ -40,7 +46,7 @@
 							for($j=1; $j<9; $j++){
 								$word = 'checkBox'.$i.$j;
 								for($z=0; $z <10; $z++){
-									if(isset($ship[$z]) && $ship[$z] == $word){
+									if(isset($player1->shipLocations[$z]) && $player1->shipLocations[$z] == $word){
 										$printed = 1;
 										echo "<td id='col$i$j' name='col$i$j' class='gameReadyTd'> </td> \n";
 									}
@@ -57,7 +63,6 @@
 					</table>
 					<input type="submit" value="Submit">
 					</form>
-					<!-- Dynamic Ship Selection Table -->	<!-- Dynamic Ship Selection Table -->	<!-- Dynamic Ship Selection Table -->
 				</div>
 				<div class="leftScore" align="center">
 					<h2> PLAYER 1 </h2>
