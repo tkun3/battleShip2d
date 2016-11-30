@@ -15,21 +15,21 @@
 
 				<?php
 
-				$ship1;
+				$ship = array(10);
 
-				$shipCount = 1;
+
+
+				$shipCount = 0;
 
 				for($i=1; $i<9; $i++){
 					for($j=1; $j<9; $j++){
-						if(isset($_POST['checkBox15']) && $_POST['checkBox15'] == 'Yes'){
-							$ship1 = 'checkBox'.'$i$j';
+						if(isset($_POST['checkBox'.$i.$j]) && $_POST['checkBox'.$i.$j] == 'Yes'){
+							$ship[$shipCount] = 'checkBox'.$i.$j;
+							echo $ship[$shipCount];
 							$shipCount++;
+
 						}
 					}
-				}
-
-				if(isset($ship1)){
-					echo asdfasdfdsfasfdsfasfasdfasdfasdfasdfa;
 				}
 				 ?>
 
@@ -45,18 +45,14 @@
 								i = (i-1)*8;
 								j =
 								j+i-1;
-								
 								// default background color onClick is blue
 								var bgColor = "#9999ff";
-								
 								// unless background color is already blue, then set it to white
 								if (x[j].style.backgroundColor == "rgb(153, 153, 255)")
 								{
 									bgColor = "#ffffff";
 								}
-									
 								x[j].style.backgroundColor = bgColor;
-								
 						}
 						</script>
 
@@ -64,7 +60,7 @@
 						for($i=1; $i<9; $i++){
 							echo "<tr name='row$i'> \n";
 							for($j=1; $j<9; $j++){
-								echo "<td id='col$i$j' onClick='btnClick($i,$j);'  name='col$i$j'> <input type='checkbox' class='cell' value='Yes' name='checkBox$i$j'> </td> \n";
+								echo "<td id='col$i$j' name='col$i$j'> <input type='checkbox' class='cell' onClick='btnClick($i,$j);' value='Yes' name='checkBox$i$j'> </td> \n";
 					 		}
 						}
 						?>
