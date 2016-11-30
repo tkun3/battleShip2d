@@ -44,7 +44,7 @@ body{
 
 .leftScore{
   position: absolute;
-  margin-top: 575px;
+  margin-top: 620px;
   margin-left: 50px;
   height: 150px;
   width:550px;
@@ -53,7 +53,7 @@ body{
 
 .rightScore{
   position: absolute;
-  margin-top: 575px;
+  margin-top: 620px;
   margin-left: 700px;
   height: 150px;
   width:550px;
@@ -87,7 +87,6 @@ td {
   background: transparent;
   border: none !important;
   border:none;
-  display:none;
 }
 
 .cell:focus {
