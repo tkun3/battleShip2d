@@ -181,8 +181,6 @@
 		<?php
 
 		if($_SESSION["player1"]->shipLive == 0){
-			<form>
-			</form>
 		}
 
 		 ?>
