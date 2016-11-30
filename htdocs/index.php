@@ -43,8 +43,20 @@
 						function btnClick(i, j) {
 								var x = document.getElementById("player1Table").getElementsByTagName("td");
 								i = (i-1)*8;
-								j = j+i-1;
-								x[j].style.backgroundColor = "#9999ff";
+								j =
+								j+i-1;
+								
+								// default background color onClick is blue
+								var bgColor = "#9999ff";
+								
+								// unless background color is already blue, then set it to white
+								if (x[j].style.backgroundColor == "rgb(153, 153, 255)")
+								{
+									bgColor = "#ffffff";
+								}
+									
+								x[j].style.backgroundColor = bgColor;
+								
 						}
 						</script>
 
