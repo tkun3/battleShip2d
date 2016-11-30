@@ -17,7 +17,7 @@ class db {
       public $conn;
       public $isConnected = False;
 
-      function construct($ServerName, $UserName, $Password, $DbName) {
+      function __construct($ServerName, $UserName, $Password, $DbName) {
                $this->serverName = $ServerName;
                $this->userName = $UserName;
                $this->password = $Password;

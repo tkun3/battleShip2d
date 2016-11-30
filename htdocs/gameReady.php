@@ -18,8 +18,7 @@
 
 				if(!isset($newConnection)){
 					session_start();
-					$newConnection = new db;
-					$newConnection->construct("localhost","root","ceng356$$!", "battleShip");
+					$newConnection = new db("localhost","root","ceng356$$!", "battleShip");
 					$newConnection->start();
 				}
 
