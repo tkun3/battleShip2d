@@ -18,8 +18,7 @@
 
 				if(!isset($newConnection)){
 					session_start();
-					$newConnection = new db;
-					$newConnection->construct("localhost","root","ceng356$$!", "battleShip");
+					$newConnection = new db("localhost","root","ceng356$$!", "battleShip");
 					$newConnection->start();
 				}
 
@@ -44,16 +43,16 @@
 
 				class shipAttack{
 
-					public $shipAttack = array(64);
+					public $shipLocations = array(64);
 					public $shipCount = 0;
 					public $shipLive = 10;
-					public $shipHitLocation = "checkBox13";
+					public $shipHitLocation = "checkBox213";
 
 					function configureGrid(){
 						for($i=1; $i<9; $i++){
 							for($j=1; $j<9; $j++){
 								if(isset($_POST['checkBox2'.$i.$j]) && $_POST['checkBox2'.$i.$j] == 'Yes'){
-									$this->shipAttack[$this->shipCount] = 'checkBox2'.$i.$j;
+									$this->shipLocations[$this->shipCount] = 'checkBox2'.$i.$j;
 									$this->shipCount++;
 								}
 							}
@@ -65,14 +64,15 @@
 					$_SESSION["player1"] = new shipParameters;
 					$_SESSION["player1"]->configureGrid();
 				}
-				$_SESSION["player1"]->shipHitLocation="checkBox12";
+				$_SESSION["player1"]->shipHitLocation="checkBox14";
 				$_SESSION["player1"]->configureGrid();
 
-				if(!isset($_SESSION["player2Table"])){
-					$_SESSION["player2Table"] = new shipAttack;
-					$_SESSION["player2Table"]->configureGrid();
+				if(!isset($_SESSION["player2"])){
+					$_SESSION["player2"] = new shipAttack;
+					$_SESSION["player2"]->configureGrid();
 				}
-				$_SESSION["player2Table"]->configureGrid();
+				$_SESSION["player2"]->shipHitLocation="checkBox14";
+				$_SESSION["player2"]->configureGrid();
 
 				function get_client_ip() {
     		$ipaddress = '';
@@ -101,14 +101,14 @@
 					<table id='player1Table' class='tablePosition'>
 						<tbody>
 						<?php
-						$_SESSION["player1"]->shipLive = 10;
+						$_SESSION["player1"]->shipLive = 0;
 						$printed = 0;
 						for($i=1; $i<9; $i++){
 							echo "<tr name='row$i'> \n";
 							for($j=1; $j<9; $j++){
 								$word = 'checkBox'.$i.$j;
 								for($z=0; $z <10; $z++){
-									if(isset($_SESSION["player1"]->shipLocations[$z]) && $_SESSION["player1"]->shipLocations[$z] == $word && $_SESSION["player1"]->shipHitLocation !== $_SESSION["player1"]->shipLocations[$z]){
+									if(isset($_SESSION["player1"]->shipLocations[$z]) && $_SESSION["player1"]->shipLocations[$z] == $word && $_SESSION["player1"]->shipHitLocation !== $_SESSION["player1"]->shipLocations[$z] && $printed == 0){
 										$printed = 1;
 										echo "<td id='col$i$j' name='col$i$j' class='gameReadyTd'> </td> \n";
 									}
@@ -161,9 +161,20 @@
 						<tbody>
 						<?php
 						for($i=1; $i<9; $i++){
-							echo "<tr name='row2$i'> \n";
+							echo "<tr name='row$i'> \n";
 							for($j=1; $j<9; $j++){
-								echo "<td id='col2$i$j' name='col2$i$j'> <input type='checkbox' class='cell' name='checkBox2$i$j' onclick='btnClick2($i,$j)'> </td> \n";
+								$word = 'checkBox2'.$i.$j;
+								for($z=0; $z <64; $z++){
+									if(isset($_SESSION["player2"]->shipLocations[$z]) && $_SESSION["player2"]->shipLocations[$z] == $word && $_SESSION["player2"]->shipHitLocation !== $_SESSION["player2"]->shipLocations[$z] && $printed == 0){
+										$printed = 1;
+										echo "<td id='col$i$j' name='col$i$j' class='shipHitTd'><input onClick='btnClick2($i,$j);' type='checkbox' class='cell' name='checkBox2$i$j' value='Yes'> </td> \n";
+									}
+								}
+								if($printed == 0){
+									echo "<td id='col$i$j' name='col$i$j'> <input onClick='btnClick2($i,$j);' type='checkbox' class='cell' name='checkBox2$i$j' value='Yes'></td> \n";
+
+								}
+								$printed = 0;
 					 		}
 						}
 						?>
@@ -178,12 +189,6 @@
 				</div>
 			</div>
 		</div>
-		<?php
-
-		if($_SESSION["player1"]->shipLive == 0){
-		}
-
-		 ?>
 </body>
 
 </html>
