@@ -43,7 +43,7 @@ function getPid($player_name) {
          global $dbConnetion;
 
          $sqlQuery = "SELECT pid from players where name='$player_name'";
-         $arr = $dbConnection->performQuery($$sqlQuery)->fetch_array();
+         $arr = $dbConnection->performQuery($sqlQuery)->fetch_array();
          return $arr['pid'];
 }
 
