@@ -25,7 +25,10 @@ class db {
       }
       
       function __destruct() {
-               $this->close();
+               if ($this->isConnected) {
+                  $this->close();
+               }
+               
       }
 
       function start() {

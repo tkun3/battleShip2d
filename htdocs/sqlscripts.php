@@ -1,4 +1,3 @@
-
 <?php
 $serverName = "192.168.1.121";
 $dbConnection = new db(serverName, "root", "password", "battleShip");
@@ -8,14 +7,9 @@ $dbConnection->start();
 
 function sendShipLocations($player_name, $array_of_ships) {
 
-         //add player to 'players' table
-         $sqlString1 = "INSERT INTO players (name) VALUES ({$player_name});"
-         
-         $sqlString2 = "select pid from players where name = '{$player_name}'";
-         $sqlResult2 = dbConnection->performQuery($sqlString2);
+         global $dbConnection;         
 
-         //         $player_id = $sqlResult2->pid;
-         var_dump($sqlResult2->fetch_all());
+         $player_id = getPid($player_name);
 
          //split string into array
          foreach ($array_of_ships as $location) {
@@ -25,15 +19,20 @@ function sendShipLocations($player_name, $array_of_ships) {
 
                  dbConnection->performQuery($sqlString3);
          }
+
+         //TODO: add error checking of some kind for each transaction
 }
 
 /** Adds player to the database
 *   Returns the pid of the player
 */
 function addPlayer($player_name) {
-         $sqlQuery = "INSERT INTO players VALUES ('$player_name')";
+         $sqlQuery = "INSERT INTO players (name) VALUES ('$player_name')";
          $dbConnection->performQuery($sqlQuery);
-         
+
+         //TODO: dont assume
+         // Assume it is successful, return the PID number         
+         return getPid($player_name);
 }
 
 /** Gets players PID from the database
@@ -41,10 +40,11 @@ function addPlayer($player_name) {
 *   TODO: get single vcalue from array
 */
 function getPid($player_name) {
+         global $dbConnetion;
+
          $sqlQuery = "SELECT pid from players where name='$player_name'";
          $arr = $dbConnection->performQuery($$sqlQuery)->fetch_array();
-         var_dump($arr);
-         return $arr;
+         return $arr['pid'];
 }
 
 ?>
