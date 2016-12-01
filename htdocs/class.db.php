@@ -17,11 +17,15 @@ class db {
       public $conn;
       public $isConnected = False;
 
-      function construct($ServerName, $UserName, $Password, $DbName) {
+      function __construct($ServerName, $UserName, $Password, $DbName) {
                $this->serverName = $ServerName;
                $this->userName = $UserName;
                $this->password = $Password;
                $this->dbName = $DbName;
+      }
+      
+      function __destruct() {
+               $this->close();
       }
 
       function start() {
@@ -31,7 +35,15 @@ class db {
                   die("Connection failed: " . $this->conn->connect_error);
                }
 
-               $isConnected = True;
+               $this->isConnected = True;
+
+               //turn on autocommitting
+               $this->conn->autocommit(True);
+      }
+      
+      function close() {
+               $this->conn->close();
+               $this->isConnected = False;
       }
 
       function performQuery($sqlQuery) {
