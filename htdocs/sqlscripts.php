@@ -2,6 +2,7 @@
 require_once('class.db.php');
 $dbConnection = new db("localhost", "root", "ceng356$$!", "battleships");
 
+
 //start DB connection
 $dbConnection->start();
 
@@ -15,7 +16,7 @@ function sendShipLocations($player_name, $array_of_ships) {
          foreach ($array_of_ships as $location) {
                  $sqlString3 = "INSERT INTO shipLocations (location, pid) ";
                  $sqlString3 .= "VALUES ('$location', '$player_id')";
-                 
+
                  // Add this point
                  $dbConnection->performQuery($sqlString3);
          }
@@ -41,6 +42,9 @@ function hitLocation($otherplayer_pid) {
 *   Returns the pid of the player
 */
 function addPlayer($player_name) {
+
+         global $dbConnection;
+
          $sqlQuery = "INSERT INTO players (name) VALUES ('$player_name')";
          $result = $dbConnection->performQuery($sqlQuery);
 
@@ -125,4 +129,3 @@ function deletePlayer($pid) {
          $dbConnection->performQuery($deleteQuery);
 }
 ?>
-

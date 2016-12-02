@@ -86,10 +86,15 @@
 					$_SESSION["player1"]->configureGrid();
 					$_SESSION["player1"]->playerName = $_POST['playerName'];
 					$_SESSION["player1"]->pid = ($_SESSION["player1"]->playerName);
-					checkForOpponents($_SESSION["player1"]->pid);
+					addPlayer($_SESSION["player1"]->playerName);
+					sendShipLocations($_SESSION["player1"]->playerName, $_SESSION["player1"]->shipLocations);
+					echo  $_SESSION["player1"]->pid;
+					$opp_id = checkForOpponents($_SESSION["player1"]->pid);
 				}
 				//	check what the PLAYER 2 MOVE WAS THAT CAUSED A HIT
-				//$_SESSION["player1"]->$shipHitLocation = hitlocation();
+				if($_SESSION["player1"]->opp_pid != 0){
+					$_SESSION["player1"]->shipHitLocation = hitlocation($_SESSION["player1"]->opp_pid);
+				}
 				$_SESSION["player1"]->checkHit();
 				$_SESSION["player1"]->configureGrid();
 				$_SESSION["player1"]->checkLose();
