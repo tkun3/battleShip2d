@@ -1,6 +1,6 @@
 <?php
-require('class.db.php');
-$dbConnection = new db("localhost", "user", "password", "battleships");
+require_once('class.db.php');
+$dbConnection = new db("localhost", "root", "ceng356$$!", "battleships");
 
 //start DB connection
 $dbConnection->start();

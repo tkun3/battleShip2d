@@ -2,8 +2,13 @@
 body{
   font-family: 'Raleway', sans-serif;
   background: url(../ocean.gif);
-  background-size: 11000px 10160px;
+  background-size: auto 100%;
   background-repeat: no-repeat;
+}
+
+h1{
+  color: white;
+  font-weight: bolder;
 }
 
 .container{

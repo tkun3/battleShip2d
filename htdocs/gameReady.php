@@ -14,13 +14,14 @@
 				</div>
 
 				<?php
-				include 'class.db.php';
-				//include 'sqlscripts.php';
+				include_once 'sqlscripts.php';
 
-				//if(!isset($newConnection)){
-					session_start();
-					$newConnection = new db("localhost","root","ceng356$$!", "battleShip");
-					$newConnection->start();
+			//	if(!isset($newConnection)){
+					if(!session_start()){
+						session_start();
+					}
+			//		$newConnection = new db("localhost","root","ceng356$$!", "battleShip");
+			//		$newConnection->start();
 			//	}
 
 				class shipParameters{
@@ -31,6 +32,9 @@
 					public $shipHitLocation = 99;
 					public $shipHits = 0;
 					public $playerName = 0;
+					public $pid = 0;
+					public $opp_pid = 0;
+
 
 					function configureGrid(){
 						for($i=1; $i<9; $i++){
@@ -81,11 +85,13 @@
 					$_SESSION["player1"] = new shipParameters;
 					$_SESSION["player1"]->configureGrid();
 					$_SESSION["player1"]->playerName = $_POST['playerName'];
+					$_SESSION["player1"]->pid = ($_SESSION["player1"]->playerName);
+					checkForOpponents($_SESSION["player1"]->pid);
 				}
-				$_SESSION["player1"]->configureGrid();
 				//	check what the PLAYER 2 MOVE WAS THAT CAUSED A HIT
 				//$_SESSION["player1"]->$shipHitLocation = hitlocation();
 				$_SESSION["player1"]->checkHit();
+				$_SESSION["player1"]->configureGrid();
 				$_SESSION["player1"]->checkLose();
 
 
