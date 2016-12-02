@@ -33,6 +33,7 @@
 
 						<!-- Dynamic Ship Selection Table -->	<!-- Dynamic Ship Selection Table -->	<!-- Dynamic Ship Selection Table -->
 					<form action="gameReady.php" method="POST">
+					<input type="textbox" name="playerName">
 					<table id="player1Table" class="tablePosition">
 						<tbody>
 

@@ -27,7 +27,9 @@
 					public $shipLocations = array(10);
 					public $shipCount = 0;
 					public $shipLive = 10;
-					public $shipHitLocation = "checkBox15";
+					public $shipHitLocation = 0;
+					public $shipHits = 0;
+					public $playerName = 0;
 
 					function configureGrid(){
 						for($i=1; $i<9; $i++){
@@ -37,6 +39,19 @@
 									$this->shipCount++;
 								}
 							}
+						}
+					}
+					function checkHit(){
+							for($j=1; $j<9; $j++){
+								if($this->shipLocations[$j] == $shipHitLocation){
+									$this->shipHits++;
+								}
+							}
+					}
+
+					function checkLose(){
+						if($this->shipHits == 10){
+							deletePlayer();
 						}
 					}
 				}
@@ -63,9 +78,16 @@
 				if(!isset($_SESSION["player1"])){
 					$_SESSION["player1"] = new shipParameters;
 					$_SESSION["player1"]->configureGrid();
+					$_SESSION["player1"]->playerName = $_POST['playerName'];
 				}
-				$_SESSION["player1"]->shipHitLocation="checkBox14";
 				$_SESSION["player1"]->configureGrid();
+				$_SESSION["player1"]->$shipHits = hitCount();
+				$_SESSION["player1"]->$shipHitLocation = hitlocation();
+				$_SESSION["player1"]->checkHit();
+				$_SESSION["player1"]->checkLose();
+
+
+
 
 				if(!isset($_SESSION["player2"])){
 					$_SESSION["player2"] = new shipAttack;
