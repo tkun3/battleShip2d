@@ -23,6 +23,13 @@ class db {
                $this->password = $Password;
                $this->dbName = $DbName;
       }
+      
+      function __destruct() {
+               if ($this->isConnected) {
+                  $this->close();
+               }
+               
+      }
 
       function start() {
                $this->conn = new mysqli($this->serverName, $this->userName, $this->password, $this->dbName);
@@ -31,7 +38,15 @@ class db {
                   die("Connection failed: " . $this->conn->connect_error);
                }
 
-               $isConnected = True;
+               $this->isConnected = True;
+
+               //turn on autocommitting
+               $this->conn->autocommit(True);
+      }
+      
+      function close() {
+               $this->conn->close();
+               $this->isConnected = False;
       }
 
       function performQuery($sqlQuery) {
