@@ -13,14 +13,28 @@ function sendShipLocations($player_name, $array_of_ships) {
 
          //split string into array
          foreach ($array_of_ships as $location) {
-                 $sqlString3 = "INSERT INTO shipLocations ";
-                 $sqlString3 += "(gridLocation, pid) ";
-                 $sqlString3 += "VALUES ('$location', '$player_id')";
-
+                 $sqlString3 = "INSERT INTO shipLocations (location, pid) ";
+                 $sqlString3 .= "VALUES ('$location', '$player_id')";
+                 
+                 // Add this point
                  $dbConnection->performQuery($sqlString3);
          }
 
          //TODO: add error checking of some kind for each transaction
+}
+
+function hitLocation($otherplayer_pid) {
+         global $dbConnection;
+
+         //Get the largest guess_id for a player (who just made a move)
+         $lastHitQuery = "SELECT MAX(guess_id) as guess_id from player_guesses where pid = $otherplayer_pid" ;
+         $guess_id = $dbConnection->performQuery($lastHitQuery)->fetch_array()['guess_id'];
+
+         // Now find that corresponding location
+         $lastHitQuery = "select location from player_guesses where guess_id = $guess_id";
+         return $dbConnection->performQuery($lastHitQuery)->fetch_array()['location'];
+
+         // TODO: Join queries into one query with sub-queries
 }
 
 /** Adds player to the database
@@ -104,4 +118,11 @@ function checkForOpponents($your_pid) {
          return $opp_array;
 }
 
+function deletePlayer($pid) {
+         global $dbConnnection;
+
+         $deleteQuery = "delete from players where pid = $pid";
+         $dbConnection->performQuery($deleteQuery);
+}
 ?>
+
