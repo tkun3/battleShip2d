@@ -7,7 +7,7 @@ $dbConnection->start();
 
 function sendShipLocations($player_name, $array_of_ships) {
 
-         global $dbConnection;         
+         global $dbConnection;
 
          $player_id = getPid($player_name);
 
@@ -48,7 +48,6 @@ function addPlayer($player_name) {
          if (!$result) {
             return 0;
          }
-
          return getPid($player_name);
 }
 
@@ -63,6 +62,8 @@ function getPid($player_name) {
          $arr = $dbConnection->performQuery($sqlQuery)->fetch_array();
          return $arr['pid'];
 }
+
+
 
 function checkForOpponents($your_pid) {
          global $dbConnection;
@@ -94,7 +95,7 @@ function checkForOpponents($your_pid) {
 
             $opp_array['name'] = $opp_name;
             $opp_array['id'] = $opp_pid;
-        
+
          } else {
            // We found at least one person who is waiting for a game
 
@@ -108,7 +109,7 @@ function checkForOpponents($your_pid) {
            $dbConnection->performQuery($updateQuery);
            $updateQuery = "UPDATE players SET opp_id = $your_pid WHERE pid = $opp_pid;";
            $dbConnection->performQuery($updateQuery);
-           
+
            // Assume successful
            $opp_arr['name'] = $opp_name;
            $opp_arr['id'] = $opp_pid;
@@ -124,3 +125,4 @@ function deletePlayer($pid) {
          $dbConnection->performQuery($deleteQuery);
 }
 ?>
+

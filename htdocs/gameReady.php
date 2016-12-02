@@ -15,19 +15,22 @@
 
 				<?php
 				include 'class.db.php';
+				//include 'sqlscripts.php';
 
-				if(!isset($newConnection)){
+				//if(!isset($newConnection)){
 					session_start();
 					$newConnection = new db("localhost","root","ceng356$$!", "battleShip");
 					$newConnection->start();
-				}
+			//	}
 
 				class shipParameters{
 
 					public $shipLocations = array(10);
 					public $shipCount = 0;
 					public $shipLive = 10;
-					public $shipHitLocation = "checkBox15";
+					public $shipHitLocation = 99;
+					public $shipHits = 0;
+					public $playerName = 0;
 
 					function configureGrid(){
 						for($i=1; $i<9; $i++){
@@ -37,6 +40,20 @@
 									$this->shipCount++;
 								}
 							}
+						}
+					}
+					function checkHit(){
+							for($z=1; $z<9; $z++){
+								if($this->shipLocations[$z] == $this->shipHitLocation){
+									$this->shipHits= $this->shipHits + 1;
+								}
+							}
+					}
+
+					function checkLose(){
+						if($this->shipHits == 10){
+							echo "YOU LOSE BUHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAH";
+						//	deletePlayer();
 						}
 					}
 				}
@@ -63,15 +80,23 @@
 				if(!isset($_SESSION["player1"])){
 					$_SESSION["player1"] = new shipParameters;
 					$_SESSION["player1"]->configureGrid();
+					$_SESSION["player1"]->playerName = $_POST['playerName'];
 				}
-				$_SESSION["player1"]->shipHitLocation="checkBox14";
 				$_SESSION["player1"]->configureGrid();
+				//	check what the PLAYER 2 MOVE WAS THAT CAUSED A HIT
+				//$_SESSION["player1"]->$shipHitLocation = hitlocation();
+				$_SESSION["player1"]->checkHit();
+				$_SESSION["player1"]->checkLose();
+
+
+
 
 				if(!isset($_SESSION["player2"])){
 					$_SESSION["player2"] = new shipAttack;
 					$_SESSION["player2"]->configureGrid();
 				}
-				$_SESSION["player2"]->shipHitLocation="checkBox14";
+				//CHECK THE PLAYER 1S MOVE HERE HERE HERE HERE HERE HERE HERE HERER HER ERH EHR EHR LID FKLDFKRIJF DJFI6 7F DJF9R 2LDFJRI
+				$_SESSION["player2"]->shipHitLocation="checkBox214";
 				$_SESSION["player2"]->configureGrid();
 
 				function get_client_ip() {
@@ -168,6 +193,10 @@
 									if(isset($_SESSION["player2"]->shipLocations[$z]) && $_SESSION["player2"]->shipLocations[$z] == $word && $_SESSION["player2"]->shipHitLocation !== $_SESSION["player2"]->shipLocations[$z] && $printed == 0){
 										$printed = 1;
 										echo "<td id='col$i$j' name='col$i$j' class='shipHitTd'><input onClick='btnClick2($i,$j);' type='checkbox' class='cell' name='checkBox2$i$j' value='Yes'> </td> \n";
+									}
+									if(isset($_SESSION["player2"]->shipLocations[$z]) && $_SESSION["player2"]->shipLocations[$z] == $word && $_SESSION["player2"]->shipHitLocation == $_SESSION["player2"]->shipLocations[$z] && $printed == 0){
+										$printed = 1;
+										echo "<td id='col$i$j' name='col$i$j' class='shipGreenTd'><input onClick='btnClick2($i,$j);' type='checkbox' class='cell' name='checkBox2$i$j' value='Yes'> </td> \n";
 									}
 								}
 								if($printed == 0){

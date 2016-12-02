@@ -1,6 +1,9 @@
 
 body{
   font-family: 'Raleway', sans-serif;
+  background: url(../ocean.gif);
+  background-size: 11000px 10160px;
+  background-repeat: no-repeat;
 }
 
 .container{
