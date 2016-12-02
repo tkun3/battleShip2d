@@ -7,7 +7,7 @@ $dbConnection->start();
 
 function sendShipLocations($player_name, $array_of_ships) {
 
-         global $dbConnection;         
+         global $dbConnection;
 
          $player_id = getPid($player_name);
 
@@ -17,7 +17,7 @@ function sendShipLocations($player_name, $array_of_ships) {
                  $sqlString3 += "(gridLocation, pid) ";
                  $sqlString3 += "VALUES ('$location', '$player_id')";
 
-                 dbConnection->performQuery($sqlString3);
+                 $dbConnection->performQuery($sqlString3);
          }
 
          //TODO: add error checking of some kind for each transaction
@@ -31,7 +31,7 @@ function addPlayer($player_name) {
          $dbConnection->performQuery($sqlQuery);
 
          //TODO: dont assume
-         // Assume it is successful, return the PID number         
+         // Assume it is successful, return the PID number
          return getPid($player_name);
 }
 
