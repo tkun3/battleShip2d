@@ -11,15 +11,10 @@ function sendShipLocations($pid, $array_of_ships) {
 
          //split string into array
          foreach ($array_of_ships as $location) {
-<<<<<<< HEAD
-                 $sqlString3 = "INSERT INTO shipLocations (location, pid) ";
-                 $sqlString3 .= "VALUES ('$location', '$player_id')";
 
-=======
                  $sqlString = "INSERT INTO ship_locations (location, pid) ";
                  $sqlString .= "VALUES ('$location', '$pid')";
 
->>>>>>> 57d3a30894184ff9dc32fcca35fc165fc1643456
                  // Add this point
                  $dbConnection->performQuery($sqlString);
          }
@@ -58,10 +53,6 @@ function makeGuess($pid, $opp_pid, $location) {
 *   Returns the pid of the player
 */
 function addPlayer($player_name) {
-<<<<<<< HEAD
-
-=======
->>>>>>> 57d3a30894184ff9dc32fcca35fc165fc1643456
          global $dbConnection;
 
          $sqlQuery = "INSERT INTO players (name) VALUES ('$player_name')";
