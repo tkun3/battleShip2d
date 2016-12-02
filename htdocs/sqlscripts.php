@@ -1,23 +1,20 @@
 <?php
 require_once('class.db.php');
-$dbConnection = new db("localhost", "root", "ceng356$$!", "battleships");
+$dbConnection = new db("localhost", "user", "password", "battleships");
 
 //start DB connection
 $dbConnection->start();
 
-function sendShipLocations($player_name, $array_of_ships) {
-
+function sendShipLocations($pid, $array_of_ships) {
          global $dbConnection;
-
-         $player_id = getPid($player_name);
 
          //split string into array
          foreach ($array_of_ships as $location) {
-                 $sqlString3 = "INSERT INTO shipLocations (location, pid) ";
-                 $sqlString3 .= "VALUES ('$location', '$player_id')";
+                 $sqlString = "INSERT INTO ship_locations (location, pid) ";
+                 $sqlString .= "VALUES ('$location', '$pid')";
                  
                  // Add this point
-                 $dbConnection->performQuery($sqlString3);
+                 $dbConnection->performQuery($sqlString);
          }
 
          //TODO: add error checking of some kind for each transaction
@@ -41,6 +38,8 @@ function hitLocation($otherplayer_pid) {
 *   Returns the pid of the player
 */
 function addPlayer($player_name) {
+         global $dbConnection;
+
          $sqlQuery = "INSERT INTO players (name) VALUES ('$player_name')";
          $result = $dbConnection->performQuery($sqlQuery);
 
