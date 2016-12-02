@@ -1,24 +1,27 @@
 <?php
 require_once('class.db.php');
-$dbConnection = new db("localhost", "root", "ceng356$$!", "battleships");
+$dbConnection = new db("localhost", "user", "password", "battleships");
 
 
 //start DB connection
 $dbConnection->start();
 
-function sendShipLocations($player_name, $array_of_ships) {
-
+function sendShipLocations($pid, $array_of_ships) {
          global $dbConnection;
-
-         $player_id = getPid($player_name);
 
          //split string into array
          foreach ($array_of_ships as $location) {
+<<<<<<< HEAD
                  $sqlString3 = "INSERT INTO shipLocations (location, pid) ";
                  $sqlString3 .= "VALUES ('$location', '$player_id')";
 
+=======
+                 $sqlString = "INSERT INTO ship_locations (location, pid) ";
+                 $sqlString .= "VALUES ('$location', '$pid')";
+
+>>>>>>> 57d3a30894184ff9dc32fcca35fc165fc1643456
                  // Add this point
-                 $dbConnection->performQuery($sqlString3);
+                 $dbConnection->performQuery($sqlString);
          }
 
          //TODO: add error checking of some kind for each transaction
@@ -38,11 +41,27 @@ function hitLocation($otherplayer_pid) {
          // TODO: Join queries into one query with sub-queries
 }
 
+/** Adds a player guess to the player_guesses table
+*   Does not check for range or even string form
+*   Use at your own risk
+*/
+function makeGuess($pid, $opp_pid, $location) {
+         global $dbConnection;
+
+         $guessQuery = "INSERT INTO player_guesses (pid, opp_id, location) ";
+         $guessQuery .= "VALUES ($pid, $opp_pid, '$location')";
+         echo $guessQuery;
+         $dbConnection->performQuery($guessQuery);
+}
+
 /** Adds player to the database
 *   Returns the pid of the player
 */
 function addPlayer($player_name) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 57d3a30894184ff9dc32fcca35fc165fc1643456
          global $dbConnection;
 
          $sqlQuery = "INSERT INTO players (name) VALUES ('$player_name')";
