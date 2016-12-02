@@ -34,6 +34,19 @@ function hitLocation($otherplayer_pid) {
          // TODO: Join queries into one query with sub-queries
 }
 
+/** Adds a player guess to the player_guesses table
+*   Does not check for range or even string form
+*   Use at your own risk
+*/
+function makeGuess($pid, $opp_pid, $location) {
+         global $dbConnection;
+
+         $guessQuery = "INSERT INTO player_guesses (pid, opp_id, location) ";
+         $guessQuery .= "VALUES ($pid, $opp_pid, '$location')";
+         echo $guessQuery;
+         $dbConnection->performQuery($guessQuery);
+}
+
 /** Adds player to the database
 *   Returns the pid of the player
 */
