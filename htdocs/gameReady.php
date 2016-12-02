@@ -14,7 +14,7 @@
 				</div>
 
 				<?php
-				include_once 'sqlscripts.php';
+				require_once 'sqlscripts.php';
 
 			//	if(!isset($newConnection)){
 					if(!session_start()){
@@ -29,11 +29,12 @@
 					public $shipLocations = array(10);
 					public $shipCount = 0;
 					public $shipLive = 10;
-					public $shipHitLocation = 99;
+					public $shipHitLocation = 9;
 					public $shipHits = 0;
 					public $playerName = 0;
 					public $pid = 0;
 					public $opp_pid = 0;
+					public $shipHitLocation1 = 0;
 
 
 					function configureGrid(){
@@ -48,7 +49,7 @@
 					}
 					function checkHit(){
 							for($z=1; $z<9; $z++){
-								if($this->shipLocations[$z] == $this->shipHitLocation){
+								if($this->shipLocations[$z] == $this->shipHitLocation1){
 									$this->shipHits= $this->shipHits + 1;
 								}
 							}
@@ -67,13 +68,15 @@
 					public $shipLocations = array(64);
 					public $shipCount = 0;
 					public $shipLive = 10;
-					public $shipHitLocation = "checkBox213";
+					public $shipHitLocation = 0;
+			//		public $shipHitLocation = hitLocation($_SESSION["player1"]->opp_pid);
 
 					function configureGrid(){
 						for($i=1; $i<9; $i++){
 							for($j=1; $j<9; $j++){
 								if(isset($_POST['checkBox2'.$i.$j]) && $_POST['checkBox2'.$i.$j] == 'Yes'){
 									$this->shipLocations[$this->shipCount] = 'checkBox2'.$i.$j;
+									$this->shipHitLocation = 'checkBox'.$i.$j;
 									$this->shipCount++;
 								}
 							}
@@ -88,27 +91,32 @@
 					$_SESSION["player1"]->pid = ($_SESSION["player1"]->playerName);
 					addPlayer($_SESSION["player1"]->playerName);
 					sendShipLocations($_SESSION["player1"]->playerName, $_SESSION["player1"]->shipLocations);
-					echo  $_SESSION["player1"]->pid;
-					$opp_id = checkForOpponents($_SESSION["player1"]->pid);
+				//	echo  $_SESSION["player1"]->pid;
+					$_SESSION["player1"]->opp_pid = checkForOpponents($_SESSION["player1"]->pid)['id'];
 				}
 				//	check what the PLAYER 2 MOVE WAS THAT CAUSED A HIT
-				if($_SESSION["player1"]->opp_pid != 0){
-					$_SESSION["player1"]->shipHitLocation = hitlocation($_SESSION["player1"]->opp_pid);
-				}
-				$_SESSION["player1"]->checkHit();
-				$_SESSION["player1"]->configureGrid();
-				$_SESSION["player1"]->checkLose();
-
-
-
 
 				if(!isset($_SESSION["player2"])){
 					$_SESSION["player2"] = new shipAttack;
 					$_SESSION["player2"]->configureGrid();
 				}
-				//CHECK THE PLAYER 1S MOVE HERE HERE HERE HERE HERE HERE HERE HERER HER ERH EHR EHR LID FKLDFKRIJF DJFI6 7F DJF9R 2LDFJRI
-				$_SESSION["player2"]->shipHitLocation="checkBox214";
+
+					//exit("u are failing");
 				$_SESSION["player2"]->configureGrid();
+				makeGuess($_SESSION["player1"]->pid, $_SESSION["player1"]->opp_pid, $_SESSION["player2"]->shipHitLocation);
+				$_SESSION["player1"]->shipHitLocation1 = hitLocation($_SESSION["player1"]->opp_pid);
+				//if( $_SESSION["player1"]->shipHitLocation1 !== null){
+
+			//	}
+				$_SESSION["player1"]->checkHit();
+				$_SESSION["player1"]->configureGrid();
+				$_SESSION["player1"]->checkLose();
+
+
+				//CHECK THE PLAYER 1S MOVE HERE HERE HERE HERE HERE HERE HERE HERER HER ERH EHR EHR LID FKLDFKRIJF DJFI6 7F DJF9R 2LDFJRI
+				$_SESSION["player2"]->shipHitLocation=$_SESSION["player1"]->shipHitLocation;
+
+
 
 				function get_client_ip() {
     		$ipaddress = '';
@@ -144,11 +152,11 @@
 							for($j=1; $j<9; $j++){
 								$word = 'checkBox'.$i.$j;
 								for($z=0; $z <10; $z++){
-									if(isset($_SESSION["player1"]->shipLocations[$z]) && $_SESSION["player1"]->shipLocations[$z] == $word && $_SESSION["player1"]->shipHitLocation !== $_SESSION["player1"]->shipLocations[$z] && $printed == 0){
+									if(isset($_SESSION["player1"]->shipLocations[$z]) && $_SESSION["player1"]->shipLocations[$z] == $word && $_SESSION["player1"]->shipHitLocation1 !== $_SESSION["player1"]->shipLocations[$z] && $printed == 0){
 										$printed = 1;
 										echo "<td id='col$i$j' name='col$i$j' class='gameReadyTd'> </td> \n";
 									}
-									if(isset($_SESSION["player1"]->shipLocations[$z]) && $_SESSION["player1"]->shipLocations[$z] == $word && $_SESSION["player1"]->shipHitLocation == $_SESSION["player1"]->shipLocations[$z] && $printed == 0){
+									if(isset($_SESSION["player1"]->shipLocations[$z]) && $_SESSION["player1"]->shipLocations[$z] == $word && $_SESSION["player1"]->shipHitLocation1 == $_SESSION["player1"]->shipLocations[$z] && $printed == 0){
 										$_SESSION["player1"]->shipLocations[$z] = $_SESSION["player1"]->shipLocations[$z].'0';
 										$printed = 1;
 										$_SESSION["player1"]->shipLive = $_SESSION["player1"]->shipLive - 1;

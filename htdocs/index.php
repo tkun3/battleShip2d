@@ -33,7 +33,6 @@
 
 						<!-- Dynamic Ship Selection Table -->	<!-- Dynamic Ship Selection Table -->	<!-- Dynamic Ship Selection Table -->
 					<form action="gameReady.php" method="POST">
-					<input type="textbox" name="playerName">
 					<table id="player1Table" class="tablePosition">
 						<tbody>
 
@@ -66,11 +65,13 @@
 					</tbody>
 					</table>
 					<input type="submit" value="Submit">
-					</form>
+
 					<!-- Dynamic Ship Selection Table -->	<!-- Dynamic Ship Selection Table -->	<!-- Dynamic Ship Selection Table -->
 				</div>
 				<div class="leftScore" align="center">
 					<h2> PLAYER 1 </h2>
+					<input type="textbox" name="playerName">
+					</form>
 				</div>
 				<div class="rightScreen" align="center">
 					<table id="player2Table" class="tablePosition">

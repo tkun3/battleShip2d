@@ -1,6 +1,6 @@
 <?php
 require_once('class.db.php');
-$dbConnection = new db("localhost", "user", "password", "battleships");
+$dbConnection = new db("localhost", "root", "ceng356$$!", "battleships");
 
 
 //start DB connection
@@ -29,8 +29,14 @@ function hitLocation($otherplayer_pid) {
          $lastHitQuery = "SELECT MAX(guess_id) as guess_id from player_guesses where pid = $otherplayer_pid" ;
          $guess_id = $dbConnection->performQuery($lastHitQuery)->fetch_array()['guess_id'];
 
+         if($guess_id == null){
+           return null;
+         }
+
+
          // Now find that corresponding location
          $lastHitQuery = "select location from player_guesses where guess_id = $guess_id";
+
          return $dbConnection->performQuery($lastHitQuery)->fetch_array()['location'];
 
          // TODO: Join queries into one query with sub-queries
@@ -45,7 +51,6 @@ function makeGuess($pid, $opp_pid, $location) {
 
          $guessQuery = "INSERT INTO player_guesses (pid, opp_id, location) ";
          $guessQuery .= "VALUES ($pid, $opp_pid, '$location')";
-         echo $guessQuery;
          $dbConnection->performQuery($guessQuery);
 }
 
@@ -70,7 +75,7 @@ function addPlayer($player_name) {
 *   TODO: get single vcalue from array
 */
 function getPid($player_name) {
-         global $dbConnetion;
+         global $dbConnection;
 
          $sqlQuery = "SELECT pid from players where name='$player_name'";
          $arr = $dbConnection->performQuery($sqlQuery)->fetch_array();
@@ -90,6 +95,7 @@ function checkForOpponents($your_pid) {
          $sqlQuery = "SELECT * from players where pid <> $your_pid AND opp_id=0";
 
          $result_arr = $dbConnection->performQuery($sqlQuery);
+         //var_dump($result_arr);
          if ($result_arr->num_rows == 0) {
             // There is currently no one waiting for a game
             // Lets wait till someone else queues for a game
@@ -125,8 +131,8 @@ function checkForOpponents($your_pid) {
            $dbConnection->performQuery($updateQuery);
 
            // Assume successful
-           $opp_arr['name'] = $opp_name;
-           $opp_arr['id'] = $opp_pid;
+           $opp_array['name'] = $opp_name;
+           $opp_array['id'] = $opp_pid;
          }
 
          return $opp_array;
